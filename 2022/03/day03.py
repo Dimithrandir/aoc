@@ -1,8 +1,8 @@
 def solve_part_one(data):
     p_sum = 0
     for ruck in data:
-        for i in ruck[:int(len(ruck)/2)]:
-            if i in ruck[int(len(ruck)/2):]:
+        for i in ruck[:len(ruck)//2]:
+            if i in ruck[len(ruck)//2:]:
                 p_sum += ord(i) - (96 if i.islower() else 38)
                 break
     print(p_sum)
