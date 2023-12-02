@@ -24,6 +24,7 @@ def solve_part_two(games):
         for val in max_values.values():
             power *= val
         power_sum += power
+
     print(power_sum)
 
 
