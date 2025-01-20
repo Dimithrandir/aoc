@@ -46,7 +46,7 @@ def run(reg, prog, p):
             else cdv(reg, prog[p+1]))
 
 
-def solve_part_one(registers, program):
+def solve_part_one(registers, program, retrieve=False):
     output = ''
     p = 0
     while p < len(program):
@@ -57,12 +57,38 @@ def solve_part_one(registers, program):
         if type(result) is str:
             output += result
         p += 2
-    print(output[:-1])
+
+    if retrieve:
+        return output[:-1]
+    else:
+        print(output[:-1])
 
 
 def solve_part_two(registers, program):
-    solve_part_one(registers, program)
-    pass
+
+    lowest_a_dec = 2**(3 * (16 - 1))
+    results = []
+    cur_digit = 0
+
+    while cur_digit < 16:
+        if not results:
+            results = [list(oct(lowest_a_dec)[2:])]
+        new_results = []
+
+        for result in results:
+            for i in range(8):
+                result[cur_digit] = str(i)
+                registers[0] = int(''.join(result), 8)
+                output = solve_part_one(registers, program, True)
+                if (int(output.split(',')[-cur_digit-1]) == program[-cur_digit-1]
+                        and result not in new_results):
+                    new_results.append(result.copy())
+
+        results = new_results
+        cur_digit += 1
+
+    lowest_result_dec = int(''.join(results[0]), 8)
+    print(lowest_result_dec)
 
 
 if __name__ == '__main__':
@@ -72,4 +98,4 @@ if __name__ == '__main__':
         program = [int(x) for x in data[1].split()[1].split(',')]
 
     solve_part_one(regs.copy(), program)
-    # solve_part_two(regs.copy(), program)
+    solve_part_two(regs.copy(), program)
