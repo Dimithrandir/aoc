@@ -41,8 +41,8 @@ def solve_part_one(race_area):
             cheat_start = (cur[0] + dirs[d][0], cur[1] + dirs[d][1])
             cheat_end = (cur[0] + 2 * dirs[d][0], cur[1] + 2 * dirs[d][1])
             if (cheat_start not in path and cheat_end in path
-                    and path.index(cur) < path.index(cheat_end)):
-                if path.index(cheat_end) - path.index(cur) - 2 >= 100:
+                    and i < path.index(cheat_end)):
+                if path.index(cheat_end) - i - 2 >= 100:
                     result += 1
     print(result)
 
@@ -53,14 +53,13 @@ def solve_part_two(race_area):
 
     for i, cur in enumerate(path):
         cheat_start = cur
-        cur_i = path.index(cur)
         cheat_ends = [x for x in path
                       if abs(cur[0] - x[0]) + abs(cur[1] - x[1]) <= 20
-                      and path.index(x) > cur_i
+                      and path.index(x) > i
                       and x != cheat_start]
         for end in cheat_ends:
-            end_i = path.index(end)
-            track_ps = end_i - cur_i
+            j = path.index(end)
+            track_ps = j - i
             cheat_ps = abs(cheat_start[0] - end[0]) + abs(cheat_start[1] - end[1])
             saved_ps = track_ps - cheat_ps
             if saved_ps >= 100:
